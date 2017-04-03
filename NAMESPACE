@@ -3,5 +3,8 @@
 export(complexCentricManualFDR)
 export(estimateGridSearchComplexCentricManualFDR)
 export(estimateGridSearchFeatureCentricManualFDR)
+export(estimate_errors)
 export(featureCentricManualFDR)
+export(manualFeatureMapping)
 export(plotManualVsDecoyFDR)
+export(resolveDoubleAssignments)

@@ -111,6 +111,7 @@ featureCentricManualFDR <- function(detected_features, manual_features,grid_sear
 #' @param feature feature
 #' @param dist_cutoff dist_cutoff
 #' @param manual_annotation manual_annotation
+#' @export
 manualFeatureMapping <- function(feature,dist_cutoff,manual_annotation){
   manual_features <- subset(manual_annotation,complex_id==feature$complex_id)
   if (nrow(manual_features) == 0) {
@@ -144,6 +145,7 @@ manualFeatureMapping <- function(feature,dist_cutoff,manual_annotation){
 #' estimate_errors
 #' @description estimate_errors.
 #' @param table table
+#' @export
 estimate_errors <- function(table){
   FP_result_ids=table$results_id[which(table$manual_id_mapp == 0)]
   FN_manual_ids=table$manual_id[which(is.na(table$manual_id_mapp))]
@@ -181,6 +183,7 @@ estimate_errors <- function(table){
 #' @param id feature_id
 #' @param mapped_features data.table with all mapped features
 #' @return data.table with mached detected and manual features
+#' @export
 resolveDoubleAssignments <- function(id,mapped_features){
   features <- mapped_features[which(manual_id_mapp== id)]
   if (nrow(features) > 1) {
