@@ -1,14 +1,17 @@
-
+#' plotManualComplexFeatureComparison
+#' @description plotManualComplexFeatureComparison.
+#' @param mapped_features data.table with mapped manual and automatically detected features
+#' @param traces protein traces object
+#' @param manual_stats data.table with manual stats
+#' @param calibration calibration functions from SECprofiler
+#' @param complexID character string with complex_id
+#' @param TP logical default TRUE
+#' @export
 plotManualComplexFeatureComparison <- function(mapped_features,
                                         traces,
                                         manual_stats,
                                         calibration,
                                         complexID,
-                                        plot_peak=TRUE,
-                                        plot_monomer=TRUE,
-                                        log=FALSE,
-                                        plot_apex=TRUE,
-                                        plot_in_complex_estimate=TRUE,
                                         TP=FALSE) {
 
   TP_result_ids <- as.numeric(unlist(strsplit(manual_stats$TP_result_ids,split=";")))
