@@ -52,7 +52,7 @@ estimateGridSearchFeatureCentricManualFDR<- function(complex_features_list,manua
     # setting a seed is absolutely crutial to ensure reproducible results!!!!!!!!!!!!!!!!!!!
     clusterSetRNGStream(cl,123)
     doSNOW::registerDoSNOW(cl)
-    clusterEvalQ(cl,library(SECprofiler,data.table))
+    clusterEvalQ(cl,library(SECprofiler,SECaddons,data.table))
     clusterExport(cl, list("featureCentricManualFDR","manualFeatureMapping","estimate_errors","resolveDoubleAssignments"))
     x <- parLapply(cl,complex_features_list,fun=featureCentricManualFDR,manual_features=manual_annotation,grid_search_list=TRUE)
     stopCluster(cl)
