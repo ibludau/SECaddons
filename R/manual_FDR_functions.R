@@ -20,15 +20,23 @@ estimateGridSearchComplexCentricManualFDR<- function(complex_features_list,manua
 #' @return List with stats - complex centric, no feature mapping performed
 #' @export
 complexCentricManualFDR <- function(auto,manual,grid_search_list=FALSE){
-  detected.complexes <- unique(auto$complex_id)
-  true.complexes <- unique(manual$complex_id)
+  high.confidence.manual <- subset(manual, confidence=="High")
+  if("complex_id" %in% names(auto)){
+    detected.complexes <- unique(auto$complex_id)
+    true.complexes <- unique(manual$complex_id)
+    high.confidence.true.complexes <- unique(high.confidence.manual$complex_id)
+  } else if ("protein_id" %in% names(auto)) {
+    detected.complexes <- unique(auto$protein_id)
+    true.complexes <- unique(manual$protein_id)
+    high.confidence.true.complexes <- unique(high.confidence.manual$protein_id)
+  } else {
+    message("error in input data: neither complex_id nor protein_id column found")
+  }
 
   TP <- sum(detected.complexes %in% true.complexes)
   FP <- sum(!(detected.complexes %in% true.complexes))
   FDR <- FP / (TP + FP)
 
-  high.confidence.manual <- subset(manual, confidence=="High")
-  high.confidence.true.complexes <- unique(high.confidence.manual$complex_id)
   TP.high.confidence <- sum(detected.complexes %in% high.confidence.true.complexes)
 
   if(grid_search_list){
@@ -69,14 +77,22 @@ estimateGridSearchFeatureCentricManualFDR<- function(complex_features_list,manua
 
 #' featureCentricManualFDR
 #' @description featureCentricManualFDR.
+#' @import data.table
 #' @param detected_features data.table containing complex feature finding results
 #' @param manual_features data.table with manual annotations.
 #' @param grid_search_list logical if grid search results are used
 #' @return List with stats - feature centric, all features were mapped between automated and manual
 #' @export
 featureCentricManualFDR <- function(detected_features, manual_features,grid_search_list=FALSE){
-  detected_features[ , count := .N, by = complex_name]
-  detected_features <- detected_features[order(-rank(count), complex_name)]
+  if("complex_name" %in% names(detected_features)){
+    detected_features[ , count := .N, by = complex_name]
+    detected_features <- detected_features[order(-rank(count), complex_name)]
+  } else if ("protein_id" %in% names(detected_features)) {
+    detected_features[ , count := .N, by = protein_id]
+    detected_features <- detected_features[order(-rank(count), protein_id)]
+  } else {
+    message("error in input data: neither complex_id nor protein_id column found")
+  }
   results <- detected_features
   results[,results_id := seq_len(.N)]
   results$manual_id <- NA
@@ -114,7 +130,14 @@ featureCentricManualFDR <- function(detected_features, manual_features,grid_sear
 #' @param manual_annotation manual_annotation
 #' @export
 manualFeatureMapping <- function(feature,dist_cutoff,manual_annotation){
-  manual_features <- subset(manual_annotation,complex_id==feature$complex_id)
+  if("complex_id" %in% names(feature)){
+    manual_features <- subset(manual_annotation,complex_id==feature$complex_id)
+  } else if ("protein_id" %in% names(feature)) {
+    manual_features <- subset(manual_annotation,protein_id==feature$protein_id)
+  } else {
+    message("error in input data: neither complex_id nor protein_id column found")
+  }
+
   if (nrow(manual_features) == 0) {
     match = 0
   } else {
@@ -186,7 +209,7 @@ estimate_errors <- function(table){
 #' @return data.table with mached detected and manual features
 #' @export
 resolveDoubleAssignments <- function(id,mapped_features){
-  features <- mapped_features[which(manual_id_mapp== id)]
+  features <- subset(mapped_features,manual_id_mapp==id)
   if (nrow(features) > 1) {
     keep <- features$results_id[which(features$peak_dist==(min(features$peak_dist)))[1]]
     unassign <- features$results_id[which(features$results_id != keep)]
