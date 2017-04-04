@@ -1,8 +1,9 @@
 #' plotSummarizedManualCompleteness
 #' @description plotSummarizedManualCompleteness
+#' @param hypotheses data.table with complex hypotheses
 #' @param PDF logical default = TRUE
 #' @export
-plotSummarizedManualCompleteness <- function(PDF=TRUE){
+plotSummarizedManualCompleteness <- function(hypotheses,PDF=TRUE){
   manual_annotation <- manual_corum_annotation
   manual_annotation <- manual_annotation[-(grep("DECOY",manual_annotation$complex_id))]
   setorder(manual_annotation,complex_id,-completeness)

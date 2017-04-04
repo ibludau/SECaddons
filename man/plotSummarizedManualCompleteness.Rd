@@ -4,9 +4,11 @@
 \alias{plotSummarizedManualCompleteness}
 \title{plotSummarizedManualCompleteness}
 \usage{
-plotSummarizedManualCompleteness(PDF = TRUE)
+plotSummarizedManualCompleteness(hypotheses, PDF = TRUE)
 }
 \arguments{
+\item{hypotheses}{data.table with complex hypotheses}
+
 \item{PDF}{logical default = TRUE}
 }
 \description{
