@@ -18,9 +18,15 @@ plotManualComplexFeatureComparison <- function(mapped_features,
   FP_result_ids <- as.numeric(unlist(strsplit(manual_stats$FP_result_ids,split=";")))
   FN_manual_ids <- as.numeric(unlist(strsplit(manual_stats$FN_manual_ids,split=";")))
 
-  features <- subset(mapped_features, complex_id == complexID | complex_id.manual == complexID)
+  if("complex_id" %in% names(mapped_features)){
+    features <- subset(mapped_features, complex_id == complexID | complex_id.manual == complexID)
+  } else if ("protein_id" %in% names(mapped_features)) {
+    features <- subset(mapped_features, protein_id == complexID | protein_id.manual == complexID)
+  } else {
+    message("error in input data: neither complex_id nor protein_id column found")
+  }
+
   peptides <- unique(unlist(strsplit(features$subunits_annotated, split = ";")))
-  #peptides <- traces$trace_annotation[complex_id == complexID]$id
   traces <- subset(traces,trace_ids = peptides)
   traces.long <- toLongFormat(traces$traces)
   setkey(traces.long, id)
