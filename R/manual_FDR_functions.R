@@ -233,7 +233,7 @@ plotManualVsDecoyFDR <- function(stats,FDR_cutoff=0.1,colour_parameter="complete
     geom_abline(intercept = 0, slope = 1) +
     scale_x_continuous(breaks=seq(0,1,0.1),limits=c(0,1),minor_breaks=NULL) +
     scale_y_continuous(breaks=seq(0,1,0.1),limits=c(0,1),minor_breaks=NULL) +
-    scale_colour_continuous(guide = guide_legend(title = eval(colour_parameter))) +
+    labs(colour = paste0(eval(colour_parameter),"\n")) +
     theme_bw()
   print(pl)
   if(PDF){dev.off()}
