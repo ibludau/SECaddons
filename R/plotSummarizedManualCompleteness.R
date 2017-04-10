@@ -1,9 +1,10 @@
 #' plotSummarizedManualCompleteness
 #' @description plotSummarizedManualCompleteness
 #' @param hypotheses data.table with complex hypotheses
+#' @param protTraces traces object of type proteins 
 #' @param PDF logical default = TRUE
 #' @export
-plotSummarizedManualCompleteness <- function(hypotheses,PDF=TRUE){
+plotSummarizedManualCompleteness <- function(hypotheses,protTraces,PDF=TRUE){
   manual_annotation <- manual_corum_annotation
   manual_annotation <- manual_annotation[-(grep("DECOY",manual_annotation$complex_id))]
   setorder(manual_annotation,complex_id,-completeness)
@@ -30,8 +31,10 @@ plotSummarizedManualCompleteness <- function(hypotheses,PDF=TRUE){
     )
   )
 
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
   if(PDF){pdf("manualComplexCompletenessPie.pdf")}
-    print(pie(x=completenessSummary$count,labels=paste0(completenessSummary$name,"\n",completenessSummary$count)))
+    print(pie(x=completenessSummary$count,labels=paste0(completenessSummary$name,"\n",completenessSummary$count),col=cbPalette[1:nrow(completenessSummary)]))
   if(PDF){dev.off()}
 
   if(PDF){pdf("manualComplexCompletenessScatter.pdf")}

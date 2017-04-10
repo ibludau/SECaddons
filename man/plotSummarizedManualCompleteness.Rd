@@ -4,10 +4,12 @@
 \alias{plotSummarizedManualCompleteness}
 \title{plotSummarizedManualCompleteness}
 \usage{
-plotSummarizedManualCompleteness(hypotheses, PDF = TRUE)
+plotSummarizedManualCompleteness(hypotheses, protTraces, PDF = TRUE)
 }
 \arguments{
 \item{hypotheses}{data.table with complex hypotheses}
+
+\item{protTraces}{traces object of type proteins}
 
 \item{PDF}{logical default = TRUE}
 }
