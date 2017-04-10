@@ -1,12 +1,12 @@
 #' plotSummarizedManualCompleteness
 #' @description plotSummarizedManualCompleteness
 #' @param hypotheses data.table with complex hypotheses
-#' @param protTraces traces object of type proteins 
+#' @param protTraces traces object of type proteins
 #' @param PDF logical default = TRUE
 #' @export
 plotSummarizedManualCompleteness <- function(hypotheses,protTraces,PDF=TRUE){
   manual_annotation <- manual_corum_annotation
-  manual_annotation <- manual_annotation[-(grep("DECOY",manual_annotation$complex_id))]
+  manual_annotation <- manual_annotation[grep("DECOY",manual_annotation$complex_id,invert=TRUE)]
   setorder(manual_annotation,complex_id,-completeness)
   manual_annotation_best <- unique(manual_annotation,by="complex_id")
   manual_annotation_best_min50 <- subset(manual_annotation_best,completeness>=0.5)
