@@ -40,7 +40,18 @@ complexCentricManualFDR <- function(auto,manual,grid_search_list=FALSE){
   TP.high.confidence <- sum(detected.complexes %in% high.confidence.true.complexes)
 
   if(grid_search_list){
-    list(FDR=FDR,TP=TP,TP_high=TP.high.confidence,corr=unique(auto$corr),window=unique(auto$window),rt_height=unique(auto$rt_height),smoothing_length=unique(auto$smoothing_length),peak_corr_cutoff=unique(auto$peak_corr_cutoff),completeness_cutoff=unique(auto$completeness_cutoff),n_subunits_cutoff=unique(auto$n_subunits_cutoff))
+    list(FDR=FDR,
+         TP=TP,
+         TP_high=TP.high.confidence,
+         corr=unique(auto$corr),
+         window=unique(auto$window),
+         rt_height=unique(auto$rt_height),
+         smoothing_length=unique(auto$smoothing_length),
+         min_feature_completeness=unique(auto$min_feature_completeness),
+         min_hypothesis_completeness=unique(auto$min_hypothesis_completeness),
+         min_subunits=unique(auto$min_subunits),
+         min_peak_corr=unique(auto$min_peak_corr),
+         min_monomer_distance_factor=unique(auto$min_monomer_distance_factor))
   } else {
     list(FDR=FDR,TP=TP,TP_high=TP.high.confidence)
   }
