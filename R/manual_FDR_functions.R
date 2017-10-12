@@ -173,11 +173,13 @@ manualFeatureMapping <- function(feature,dist_cutoff,manual_annotation){
 estimate_errors <- function(table){
   FP_result_ids=table$results_id[which(table$manual_id_mapp == 0)]
   FN_manual_ids=table$manual_id[which(is.na(table$manual_id_mapp))]
+  FN_high_manual_ids=table$manual_id[which(is.na(table$manual_id_mapp) & (table$confidence == "High"))]
   TP_result_ids=table$results_id[which((!is.na(table$manual_id_mapp)) & (table$manual_id_mapp != 0))]
   TP_high_result_ids = table$results_id[which((!is.na(table$manual_id_mapp)) & (table$manual_id_mapp != 0) & (table$confidence == "High"))]
 
   FP=length(FP_result_ids)
   FN=length(FN_manual_ids)
+  FN_high=length(FN_high_manual_ids)
   TP=length(TP_result_ids)
   TP_high = length(TP_high_result_ids)
 
@@ -194,6 +196,7 @@ estimate_errors <- function(table){
     TP_high=TP_high,
     FP=FP,
     FN=FN,
+    FN_high=FN_high,
     FDR=FDR,
     summary_r2=summary_r2,
     FP_result_ids=paste(FP_result_ids,collapse=";"),
